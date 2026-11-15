@@ -1,0 +1,112 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    padding: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calculator{
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    box-shadow: 0px 0px 20px black;
+}
+
+button{
+    flex: 1;
+    font-size: 42px;
+    min-width: 0;
+    padding: 6px 0;
+    border-radius: 10px;
+    border: none;
+    background-color: rgb(18, 18, 18);
+    color: white;
+}
+
+button:hover{
+    background-color: #3a3a3a;
+}
+
+#clear,
+#delete{
+    background-color: #f08c00;
+}
+
+#clear:hover, #delete:hover{
+    background-color: #ffa22e;
+}
+
+#divide:hover, #multiply:hover, 
+#plus:hover, #minus:hover, #eval:hover{
+    background-color: #5fd374;
+}
+
+#divide, #multiply, 
+#plus, #minus, #eval{
+    background-color: #40c057;
+}
+
+.display{
+    border: 1px solid black;
+    border-radius: 10px;
+    min-height: 125px;
+}
+
+.keypad{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-top: 10px;
+    padding: 6px;
+    gap: 6px;
+}
+
+.row1, .row2, .row3, .row4, .row5 {
+    display: flex;
+    gap: 6px;
+}
+
+.row1, .row2, .row3{
+    display: flex;
+    border-radius: 5px;
+}
+
+.row4, .row5, .column{
+    display: flex;
+    border-radius: 5px;
+}
+
+.lower {
+    display: flex;
+}
+
+.two_rows .row4,
+.two_rows .row5 {
+    flex: 1;
+}
+
+.column {
+    display: flex;
+    flex: 0.95;
+}
+
+#zero {
+    flex: 2;
+}
+
+.two_rows{
+    display: flex;
+    flex-direction: column;
+    flex: 3;
+    gap: 6px;
+    margin-right: 5px;
+}
