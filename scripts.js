@@ -46,7 +46,7 @@ function handleClick(numop){
     const operators = "+-×÷"
     var result = 0
 
-    const parts = display.textContent.split(/[+\-*/]/);
+    const parts = display.textContent.split(/[+\-×÷]/);
     const currentNumber = parts[parts.length - 1];
 
     if(numop === "." && currentNumber.includes(".")) return 
