@@ -203,6 +203,7 @@ function keyDetect(event){
         case "-": handleClick("-"); break;
         case "*": handleClick("×"); break;
         case "/": handleClick("÷"); break;
+        case ".": handleClick("."); break;
         case "Enter": handleClick("="); break;
         case "Backspace": handleClick("del"); break;
         case "Delete": handleClick("clr"); break;
