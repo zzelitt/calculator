@@ -51,6 +51,10 @@ function handleClick(numop){
 
     if(numop === "." && currentNumber.includes(".")) return 
 
+    if(currentNumber.length >= 17){
+        if(numbers.includes(numop)) return
+    }
+
     if(!(display.textContent === "" && !numbers.includes(numop))){
         if(display.textContent.includes("ERROR") || display.textContent.includes("That's impossible bro 🥀") || display.textContent.includes("Do normal calcs bru 🥀") || display.textContent.includes("NaN")){
             display.textContent = ""
