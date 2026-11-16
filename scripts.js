@@ -77,6 +77,9 @@ function handleClick(numop){
                 operator = numop;
                 lastEval = false;
             }
+            else{
+                display.textContent = display.textContent.slice(0, -2) + numop + " ";
+            }
         }
 
         if(numop === "clr"){
