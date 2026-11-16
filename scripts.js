@@ -19,16 +19,18 @@ const key_minus = document.getElementById("minus").addEventListener("click", () 
 const key_multiply = document.getElementById("multiply").addEventListener("click", () => handleClick("×"));
 const key_divide = document.getElementById("divide").addEventListener("click", () => handleClick("÷"));
 const key_eval = document.getElementById("eval").addEventListener("click", () => handleClick("="));
-//const key_decimal = document.getElementById("decimal").addEventListener("click", () => handleClick("."));
+const key_decimal = document.getElementById("decimal").addEventListener("click", () => handleClick("."));
 
 const key_del = document.getElementById("delete").addEventListener("click", () => handleClick("del"));
 const key_clear = document.getElementById("clear").addEventListener("click", () => handleClick("clr"));
 
-const display = document.querySelector(".display_para")
+const display_hi = document.querySelector(".display_high")
+const display = document.querySelector(".display_low")
 
 let num1 = 0;
 let num2 = 0;
 let operator = "";
+let isDec = false;
 let lastEval = false;
 
 /////////////////////////////////////////////////////
@@ -37,13 +39,13 @@ let lastEval = false;
 
 function operate(operator, a, b){
     let result;
-    let aNum = parseInt(a);
-    let bNum = parseInt(b);
+    let aNum = parseFloat(a);
+    let bNum = parseFloat(b);
 
-    if(aNum === bNum && aNum === 0){
+    if(aNum === bNum && aNum === 0 && (operator === "×" || operator === "÷")){
         return "That's impossible bro 🥀";
     }
-    else if(bNum === 0) return "Do normal calcs bru 🥀";
+    else if(bNum === 0 && (operator === "×" || operator === "÷")) return "Do normal calcs bru 🥀";
 
     switch(operator){
         case '+': result = add(aNum, bNum); 
@@ -54,37 +56,42 @@ function operate(operator, a, b){
                   break;
         case '÷': result = divide(aNum, bNum); 
                   break;
-        default: return "Err"
+        default: return "ERROR"
     }
 
     if(Number.isInteger(result)) return result;
     else if(typeof(result === 'number') && !Number.isInteger(result)){
         if(hasFivePlusDigits(result) === true){ 
-            return result.toFixed(5);
+            return Math.round(result * 10000) / 10000
         }
         else{
             return result;
         }
     }
 }
+
 function handleClick(numop){
     const numbers = "0123456789"
     const operators = "+-×÷"
     var result = 0
 
     if(!(display.textContent === "" && !numbers.includes(numop))){
-        if(display.textContent === "Err" || display.textContent === "That's impossible bro 🥀" || display.textContent === "Do normal calcs bru 🥀" || display.textContent === "NaN"){
+        if(display.textContent.includes("ERROR") || display.textContent.includes("That's impossible bro 🥀") || display.textContent.includes("Do normal calcs bru 🥀") || display.textContent.includes("NaN")){
             display.textContent = ""
         }
 
-        if(numbers.includes(numop)){
+        if(numbers.includes(numop) || numop === "."){
             if(lastEval){
                 display.textContent = numop;
+                display_hi.textContent = ""
                 lastEval = false;
             }
-            else{
+            else if(numop != "."){
                 result = parseInt(numop);
                 display.textContent += result
+            }
+            else{
+                display.textContent += numop
             }
         }
         else if(numop != "=" && numop != "del" && numop != "clr"){
@@ -97,6 +104,7 @@ function handleClick(numop){
         }
 
         if(numop === "clr"){
+            display_hi.textContent = ""
             display.textContent = ""
             lastEval = false;
         }
@@ -105,16 +113,33 @@ function handleClick(numop){
             lastEval = false;
         }
 
+        if(display.textContent.includes(".")){
+            isDec = true;
+        }
+        else{
+            isDec = false;
+        }
+
         const expressionArr = display.textContent.split(" ");
 
-        if(expressionArr.length >= 4){
+        if(expressionArr.length >= 4 && isDec === false){
+            display_hi.textContent = display.textContent.slice(0, -2) + " = ";
+            display.textContent = operate(expressionArr[1], expressionArr[0], expressionArr[2]) + " " + numop + " ";
+            lastEval = false;
+        }
+        else if(expressionArr.length >= 4 && isDec === true){
+            display_hi.textContent = display.textContent.slice(0, -2) + " = ";
             display.textContent = operate(expressionArr[1], expressionArr[0], expressionArr[2]) + " " + numop + " ";
             lastEval = false;
         }
         else if(numop === "=" && expressionArr.length >= 3 && (expressionArr[2] != "")){
+            display_hi.textContent = display.textContent + " = "
             display.textContent = operate(expressionArr[1], expressionArr[0], expressionArr[2]);
             lastEval = true;
         }
+    }
+    if(display.textContent === "NaN"){
+        display.textContent = "ERROR"
     }
 }
 
