@@ -27,6 +27,8 @@ const key_clear = document.getElementById("clear").addEventListener("click", () 
 const display_hi = document.querySelector(".display_high")
 const display = document.querySelector(".display_low")
 
+document.addEventListener("keydown", (event) => keyDetect(event));
+
 let num1 = 0;
 let num2 = 0;
 let operator = "";
@@ -37,45 +39,14 @@ let lastEval = false;
 ///////////////// FUNCTIONS
 ////////////////////////////////////////////////////
 
-function operate(operator, a, b){
-    let result;
-    let aNum = parseFloat(a);
-    let bNum = parseFloat(b);
-
-    if(aNum === bNum && aNum === 0 && (operator === "×" || operator === "÷")){
-        return "That's impossible bro 🥀";
-    }
-    else if(bNum === 0 && (operator === "×" || operator === "÷")) return "Do normal calcs bru 🥀";
-
-    switch(operator){
-        case '+': result = add(aNum, bNum); 
-                  break;
-        case '-': result = sub(aNum, bNum); 
-                  break;
-        case '×': result = multiply(aNum, bNum); 
-                  break;
-        case '÷': result = divide(aNum, bNum); 
-                  break;
-        default: return "ERROR"
-    }
-
-    if(Number.isInteger(result)) return result;
-    else if(typeof(result === 'number') && !Number.isInteger(result)){
-        if(hasFivePlusDigits(result) === true){ 
-            return Math.round(result * 10000) / 10000
-        }
-        else{
-            return result;
-        }
-    }
-}
+// vv I call this the Heart of my Calculator, this is the commander of every other function
 
 function handleClick(numop){
     const numbers = "0123456789"
     const operators = "+-×÷"
     var result = 0
 
-    if(!(display.textContent === "" && !numbers.includes(numop))){
+    if(!(display.textContent === "" && !numbers.includes(numop)) && !(display.textContent.includes(".") && numop === ".")){
         if(display.textContent.includes("ERROR") || display.textContent.includes("That's impossible bro 🥀") || display.textContent.includes("Do normal calcs bru 🥀") || display.textContent.includes("NaN")){
             display.textContent = ""
         }
@@ -143,6 +114,44 @@ function handleClick(numop){
     }
 }
 
+// vv Function to determine what calculation has to be performed
+
+function operate(operator, a, b){
+    let result;
+    let aNum = parseFloat(a);
+    let bNum = parseFloat(b);
+
+    if(aNum === bNum && aNum === 0 && (operator === "×" || operator === "÷")){
+        return "That's impossible bro 🥀";
+    }
+    else if(bNum === 0 && (operator === "×" || operator === "÷")) return "Do normal calcs bru 🥀";
+
+    switch(operator){
+        case '+': result = add(aNum, bNum); 
+                  break;
+        case '-': result = sub(aNum, bNum); 
+                  break;
+        case '×': result = multiply(aNum, bNum); 
+                  break;
+        case '÷': result = divide(aNum, bNum); 
+                  break;
+        default: return "ERROR"
+    }
+
+    if(Number.isInteger(result)) return result;
+    else if(typeof(result === 'number') && !Number.isInteger(result)){
+        if(hasFivePlusDigits(result) === true){ 
+            return Math.round(result * 10000) / 10000
+        }
+        else{
+            return result;
+        }
+    }
+}
+
+/* vv Function to determine whether the given float has more than 5 digits
+      after the decimal */
+
 function hasFivePlusDigits(num){
     const str = num.toString();
     const parts = str.split('.');
@@ -153,6 +162,8 @@ function hasFivePlusDigits(num){
         return true;
     };
 }
+
+// vv Calculation functions
 
 function add(a, b){
     return a+b;
@@ -168,4 +179,32 @@ function multiply(a, b){
 
 function divide(a, b){
     return a/b;
+}
+
+// ^^
+
+
+// vv This function will detect keyboard events
+
+function keyDetect(event){
+    const key = event.key;
+    switch(key){
+        case "0": handleClick("0"); break;
+        case "1": handleClick("1"); break;
+        case "2": handleClick("2"); break;
+        case "3": handleClick("3"); break;
+        case "4": handleClick("4"); break;
+        case "5": handleClick("5"); break;
+        case "6": handleClick("6"); break;
+        case "7": handleClick("7"); break;
+        case "8": handleClick("8"); break;
+        case "9": handleClick("9"); break;
+        case "+": handleClick("+"); break;
+        case "-": handleClick("-"); break;
+        case "*": handleClick("×"); break;
+        case "/": handleClick("÷"); break;
+        case "Enter": handleClick("="); break;
+        case "Backspace": handleClick("del"); break;
+        case "Delete": handleClick("clr"); break;
+    }
 }
