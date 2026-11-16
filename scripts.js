@@ -46,7 +46,12 @@ function handleClick(numop){
     const operators = "+-×÷"
     var result = 0
 
-    if(!(display.textContent === "" && !numbers.includes(numop)) && !(display.textContent.includes(".") && numop === ".")){
+    const parts = display.textContent.split(/[+\-*/]/);
+    const currentNumber = parts[parts.length - 1];
+
+    if(numop === "." && currentNumber.includes(".")) return 
+
+    if(!(display.textContent === "" && !numbers.includes(numop))){
         if(display.textContent.includes("ERROR") || display.textContent.includes("That's impossible bro 🥀") || display.textContent.includes("Do normal calcs bru 🥀") || display.textContent.includes("NaN")){
             display.textContent = ""
         }
